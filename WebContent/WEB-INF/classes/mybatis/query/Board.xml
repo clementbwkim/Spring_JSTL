@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.board.dao.BoardDao">
+	<sql id="boardCommon">
+		SELECT 
+				K_NUM K_NUM 
+			   ,K_NAME K_NAME
+			   ,K_TITLE K_TITLE
+			   ,K_DATE K_DATE
+	    FROM SPRING_BOARD 
+	    <trim prefix="WHERE" prefixOverrides="AND">
+	    		<if test="search=='k_title'">
+	    			<![CDATA[k_title LIKE '%'|| #{keyword}||'%']]>
+	    		</if>
+	    		<if test="search=='k_content'">
+	    			<![CDATA[AND k_content LIKE '%'|| #{keyword}||'%']]>
+	    		</if>
+	    		<if test="search=='k_name'">
+	    			<![CDATA[AND k_name LIKE '%'|| #{keyword}||'%']]>
+	    		</if>
+	    </trim>
+	</sql>
+	
+	<!-- 게시물 기본 조회 (현 사용 쿼리문은 주석 처리)
+	<select id="boardList" parameterType="board" resultType="board">
+			SELECT
+					A.K_NUM K_NUM 
+				   ,A.K_NAME K_NAME
+				   ,A.K_TITLE K_TITLE
+				   ,A.K_DATE K_DATE
+		    FROM SPRING_BOARD A	 
+	</select> -->
+
+	
+	<select id="boardList" parameterType="board" resultType="board">
+			SELECT
+					K_NUM K_NUM 
+				   ,K_NAME K_NAME
+				   ,K_TITLE K_TITLE
+				   ,K_DATE K_DATE
+		    FROM 
+		    (	 SELECT list.*, ROWNUM AS RNUM
+		    	 FROM(
+		    	 			<include refid="boardCommon"></include>
+		    	 			<choose>
+		    	 				 <when test="order_by == 'k_num'">
+		    	 				 		ORDER BY K_NUM
+		    	 				 </when>
+		    	 				 <when test="order_by == 'k_date'">
+		    	 				 		ORDER BY K_DATE
+		    	 				 </when>
+		    	 			</choose>
+		    	 			<choose>
+		    	 				<when test="order_sc == 'ASC'">
+		    	 						ASC
+		    	 				</when>
+		    	 				<when test="order_sc == 'DESC'">
+		    	 						DESC
+		    	 				</when>
+		    	 			</choose>
+		    	 ) list
+		    )
+		    <where>
+		    	<if test="start_row != null and start_row != ''">
+		    			<if test="end_row != null and end_row !=''">
+		    					RNUM BETWEEN #{start_row}AND#{end_row}
+		    			</if>
+		    	</if>
+		    </where>	 
+	</select>
+	
+	<select id="boardListCnt" parameterType="board" resultType="int">
+			SELECT NVL(count(1),0) 
+			FROM 
+			(SELECT list.*, ROWNUM AS RNUM
+			 FROM (
+			 			<include refid="boardCommon"></include>
+			 			 	ORDER BY k_num desc
+			 )list
+		)
+	</select>
+	
+
+	<select id="boardDetail" parameterType="board" resultType="board">
+			SELECT
+					A.K_NUM K_NUM 
+				   ,A.K_NAME K_NAME
+				   ,A.K_TITLE K_TITLE
+				   ,A.K_CONTENT K_CONTENT
+				   ,A.K_FILE K_FILE 
+				   ,K_DATE K_DATE
+		    FROM SPRING_BOARD A	  
+		    WHERE A.K_NUM = #{k_num}
+	</select>
+	
+	<insert id="boardInsert" parameterType="board">
+	<!-- Board - insertBoard -->
+		INSERT INTO SPRING_BOARD(
+				K_NUM,
+				K_NAME,
+				K_TITLE,
+				K_CONTENT,
+				K_FILE,
+				K_PWD,
+				K_DATE
+		)VALUES(
+				#{k_num},
+				#{k_name},
+				#{k_title},
+				#{k_content},
+				#{k_file},
+				#{k_pwd},
+				SYSDATE
+		)
+	</insert>
+
+	<select id="pwdConfirm" parameterType="board" resultType="int">
+			SELECT
+					NVL((
+						SELECT 
+								1 
+						FROM SPRING_BOARD
+						WHERE K_NUM = #{k_num}
+						AND K_PWD = #{k_pwd}
+					), 0) AS RESULT
+			FROM DUAL
+	</select>
+	
+	<update id="boardUpdate" parameterType="board">
+			UPDATE SPRING_BOARD SET
+					K_TITLE = #{k_title},
+					K_NAME  = #{k_name},
+					K_CONTENT  = #{k_content},
+					K_DATE  = SYSDATE
+					<if test="k_file != ''">
+							,K_FILE = #{k_file}
+					</if>
+				<if test="k_pwd != null and k_pwd != ''">
+						,K_PWD = #{k_pwd}
+				</if>
+				WHERE K_NUM = #{k_num}
+	</update>
+	
+	<delete id="boardDelete" parameterType="board">
+			DELETE FROM SPRING_BOARD 
+			WHERE K_NUM = #{k_num}
+	</delete>
+	
+	<select id="chaebunBoard" resultType="board">
+		SELECT NVL(MAX(SUBSTR(K_NUM, 2)),0)+1 AS k_num FROM SPRING_BOARD		
+	</select>
+
+</mapper>

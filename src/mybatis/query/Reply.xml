@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.reply.dao.ReplyDao">
+
+<select id="replyList" parameterType="reply" resultType="reply">
+			SELECT
+					R_NUM
+				   ,K_NUM	 
+				   ,R_NAME
+				   ,R_CONTENT
+				   ,R_PWD
+				   ,R_DATE
+		    FROM SPRING_REPLY
+		    WHERE K_NUM = #{k_num}
+		    ORDER BY R_NUM DESC
+	</select>
+	
+	<insert id="replyInsert" parameterType="reply">
+			INSERT INTO SPRING_REPLY(
+				R_NUM, K_NUM, R_NAME, R_CONTENT, R_PWD, R_DATE
+				)VALUES(
+				#{r_num},#{k_num},#{r_name},#{r_content},#{r_pwd}, SYSDATE
+				)
+	</insert>
+	
+	<update id="replyUpdate" parameterType="reply">
+			UPDATE SPRING_REPLY
+			SET R_CONTENT = #{r_content},
+				R_DATE = SYSDATE
+			WHERE R_NUM = #{r_num}
+	</update>
+	
+	<delete id="replyDelete" parameterType="reply">
+			DELETE 
+			FROM SPRING_REPLY
+			WHERE R_NUM = #{r_num}
+	</delete>
+	
+	<select id="chaebunReply" resultType="reply">
+		SELECT NVL(MAX(SUBSTR(R_NUM, 2)),0)+1 AS r_num FROM SPRING_REPLY		
+	</select>
+</mapper>

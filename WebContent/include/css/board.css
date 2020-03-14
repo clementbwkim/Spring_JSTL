@@ -1,0 +1,86 @@
+@CHARSET "EUC-KR";
+/*공통부분*/
+*{margin: 0px; padding: 0px;}
+body, td, input, select {
+		font-family: '돋움'; font-size: 12px;	
+}
+a{text-decoration: none; color: #000000;}
+caption {
+	display: none;
+}
+img {
+	border: 0px;
+}
+
+/*게시판 리스트 화면*/
+/*제목 부분*/
+#boardContainer {width: 800px;}
+#boardTit{font-size: large; border-left: 10px solid #000066;
+		  border-bottom: 1px solid #000066;
+		  padding: 10px; width: 760px;
+}
+/*검색부분*/
+#boardSearch table{width: 780px; text-align: right; margin: 10px; border-collapse: collapse;}
+#boardSearch #btd1{width: 390px; text-align: left;}
+#boardSearch #btd2{width: 390px; text-align: right;}
+
+/*리스트부분*/
+#boardList{margin: 10px;}
+#boardList table{
+		width: 780px; padding: 0px; border: 1px solid #000066;
+		border-bottom: 0px; border-collapse: collapse;
+}
+#boardList tr{padding: 0px;}
+#boardList th{border-bottom:1px solid #000066; border-right:1px solid #000066;  
+			  padding: 5px; background-color: #e7e7e7;}
+#boardList td{padding: 5px; border-bottom: 1px solid #000066; }
+#boardList .borcle{border-right: 0px;}
+
+/*버튼 부분*/
+#boardContainer #boardBut{width: 780px; margin: 10px; text-align: center;}
+
+/*페이징 출력 div부분*/
+#boardContainer #boardPage{width: 780px; margin: 10px;}
+
+/*페이징 버튼 부분*/
+.paginate{width: 100%; height: 20px; text-align: center; vertical-align: top; font-size: 14px;}
+.paginate span .textAn{ vertical-align: top;}
+.paginate a.on{color: #FF3300;}
+
+/*게시판 입력화면*/
+#boardWrite{width: 780px; padding: 0px; border: 1px solid #000066; border-bottom: 0px; 
+			margin: 10px; border-collapse: collapse;
+}
+#boardWrite td{padding: 5px; border-bottom: 1px solid #000066; }
+input [type="text"], input[type="password"]{border: 1px solid #000066; width: 150px; 
+}
+#b.title{width: 480px;}
+#b.content{border: 1px solid #000066; width: 480px; height: 200px; }
+#boardBut{width: 800px; text-align: right; margin-top: 15px;}
+
+#tel_no1,#tel_no2,#tel_no3{width: 50px;}
+#mop_no1,#mop_no2,#mop_no3{width: 50px;}
+#idCheckMsg{font-weight: bold;}
+
+/*게시판 상세화면*/
+#boardPwdBut{width: 780px; /*margin:10px;*/ margin-left: 8px;}
+#boardPwdBut #btd1{width: 580px; text-align: left; vertical-align: bottom;}
+#boardPwdBut #btd2{width: 180px; text-align: right; vertical-align: bottom;}
+#boardPwdBut input {margin-bottom: 0px; margin-left: 5px;}
+#msg{padding-left: 4px; vertical-align: middle; font-weight: bold;}
+#pwdChk #l_pwd{vertical-align: bottom;}
+#pwdChk #b_pwd{border: 1px dotted #000066; }
+
+#boardDetail table {width: 770px; padding: 0px; border: 1px solid #000066; 
+						border-bottom: 0px; border-left: 0px; margin: 0px; border-collapse: collapse;
+	}
+#boardDetail td{padding: 5px; border-bottom: 1px solid #000066; 
+				border-left: 1px solid #000066;}
+#boardDetail .vm{vertical-align: middle;}
+#boardDetail .ctr{height: 150px; vertical-align: top;}
+.ac{text-align: center; background-color: #ebebeb; font-weight: bold;}
+
+
+
+	
+
